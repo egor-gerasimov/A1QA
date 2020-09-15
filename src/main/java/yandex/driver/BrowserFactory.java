@@ -1,36 +1,31 @@
 package yandex.driver;
 
-import java.util.HashMap;
-import java.util.Map;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import yandex.exception.WrongWebDriverException;
 
 public class BrowserFactory {
 
-    private static final Map<String, WebDriver> DRIVERS = new HashMap<String, WebDriver>();
-
     public static WebDriver getBrowser(String browserName) {
-
-        WebDriver driver = null;
-        PropertyManager propertyManager = PropertyManager.getInstance();
-
+        browserName = browserName.toLowerCase();
         switch (browserName) {
             case "firefox":
-                driver = DRIVERS.get("firefox");
-                if (driver == null) {
-                    System.setProperty("webdriver.gecko.driver", propertyManager.getResourcesPath() + "geckodriver.exe");
-                    driver = FirefoxWebDriver.getInstance();
-                    DRIVERS.put("firefox", driver);
-                }
-                break;
+                WebDriverManager.firefoxdriver().setup();
+                return new FirefoxDriver();
             case "chrome":
-                driver = DRIVERS.get("chrome");
-                if (driver == null) {
-                    System.setProperty("webdriver.chrome.driver", propertyManager.getResourcesPath() + "chromedriver.exe");
-                    driver = ChromeWebDriver.getInstance();
-                    DRIVERS.put("chrome", driver);
+                WebDriverManager.chromedriver().setup();
+                return new ChromeDriver();
+            default:
+            {
+                try {
+                    throw new WrongWebDriverException("Didn't find driver " + browserName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
                 }
-                break;
+            }
         }
-        return driver;
     }
 }

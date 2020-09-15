@@ -6,12 +6,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import yandex.utils.Waiter;
+import yandex.driver.WebDriverSingleton;
 
 public class HomePageYandex {
 
-    private static final String POPULAR_CATEGORIES = "//div[1]/div[@data-zone-name='category-link']/div/a/span";
+    private static final By POPULAR_CATEGORIES = By.xpath("//div[1]/div[@data-zone-name='category-link']/div/a/span");
     private static final By BUTTON_LOGIN = By.xpath("//span[.='Войти']");
     private static final By BUTTON_OPEN_LOGOUT = By.className("_3jM6DeytKy");
     private static final By BUTTON_LOGOUT = By.xpath("//*[.='Выйти']");
@@ -21,12 +21,9 @@ public class HomePageYandex {
     private static final By ALL_CATEGORIES = By
         .xpath("//*[@id=\"27903767\"]//div[1]/div[@data-zone-name='category-link']/button/a/span");
     private static final By POPUP = By.className("_2y9LPPqeQi");
+    public static final String PAGE_TITLE = "Яндекс.Маркет";
 
-    private final WebDriver driver;
-
-    public HomePageYandex(WebDriver driver) {
-        this.driver = driver;
-    }
+    private final WebDriver driver = WebDriverSingleton.getInstance();
 
     public void clickLogin() {
         driver.findElement(BUTTON_LOGIN).click();
@@ -41,17 +38,12 @@ public class HomePageYandex {
     }
 
     public List<String> getPopularCategories() {
-        return driver.findElements(By.xpath(POPULAR_CATEGORIES)).parallelStream()
+        return driver.findElements(POPULAR_CATEGORIES).parallelStream()
             .map(WebElement::getText).filter(o -> !o.equals("")).collect(Collectors.toList());
     }
 
     public void clickCatalog() {
-        WebElement buttonCatalog = null;
-        if (!driver.findElements(BUTTON_CATALOG_1).isEmpty()) {
-            buttonCatalog = driver.findElement(BUTTON_CATALOG_1);
-        } else {
-            buttonCatalog = driver.findElement(BUTTON_CATALOG_2);
-        }
+        WebElement buttonCatalog = Waiter.implicitWait(BUTTON_CATALOG_1, BUTTON_CATALOG_2);
         buttonCatalog.click();
     }
 
@@ -61,14 +53,12 @@ public class HomePageYandex {
     }
 
     public boolean isLoggedIn() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.presenceOfElementLocated(BUTTON_PROFILE));
+        Waiter.explicitWaitLocated(BUTTON_PROFILE);
         return true;
     }
 
     public boolean isLoggedOut() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.presenceOfElementLocated(BUTTON_LOGIN));
+        Waiter.explicitWaitLocated(BUTTON_LOGIN);
         return true;
     }
 
@@ -80,6 +70,6 @@ public class HomePageYandex {
     }
 
     public boolean isAtPage() {
-        return driver.getTitle().contains("Яндекс.Маркет");
+        return driver.getTitle().contains(PAGE_TITLE);
     }
 }
