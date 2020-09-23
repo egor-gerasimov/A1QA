@@ -29,6 +29,9 @@ public class Waits {
     public static void explicitWaitTitle(String title) {
         EXPLICIT_WAIT.until(ExpectedConditions.titleIs(title));
     }
+    public static void explicitWaitVisible(By locator) {
+        EXPLICIT_WAIT.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
 
     public static void setImplicitlyWait() {
         setImplicitlyWait(Integer.parseInt(PropertyManager.getProperty("timeout.in.sec")), TimeUnit.SECONDS);

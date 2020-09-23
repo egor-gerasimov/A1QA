@@ -15,15 +15,19 @@ public class GameForm extends BaseFrom {
         .xpath("//*[@id='game_area_purchase']/div[1]//div[@class='discount_final_price']");
     private static final By ORIGINAL_PRICE = By
         .xpath("//*[@id='game_area_purchase']/div[1]//div[@class='discount_original_price']");
+
+    private final LabelElement finalPriceLabel = new LabelElement(FINAL_PRICE, "Final price");
+    private final LabelElement originalPriceLabel = new LabelElement(ORIGINAL_PRICE, "Original price");
+    private final LabelElement discountPercentLabel = new LabelElement(DISCOUNT_PERCENT, "Discount percent");
+
     private Game game;
 
     public void readGame() {
-        double finalPrice = toDouble(new LabelElement(FINAL_PRICE).getText());
-        LabelElement discount = new LabelElement(ORIGINAL_PRICE);
+        double finalPrice = toDouble(finalPriceLabel.getText());
         game = new Game();
-        if (!discount.isEmpty()) {
-            double originalPrice = toDouble(discount.getText());
-            double discountPercent = toDouble(new LabelElement(DISCOUNT_PERCENT).getText());
+        if (originalPriceLabel.exists()) {
+            double originalPrice = toDouble(originalPriceLabel.getText());
+            double discountPercent = toDouble(discountPercentLabel.getText());
             game.setOriginalPrice(originalPrice);
             game.setDiscountRate(discountPercent);
         }

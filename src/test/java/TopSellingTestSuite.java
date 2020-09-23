@@ -1,7 +1,10 @@
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import framework.utils.Dictionary;
+import framework.utils.Logger;
 import java.util.List;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import project.form.AgeCheckForm;
 import project.form.GameForm;
@@ -11,45 +14,35 @@ import project.model.Game;
 
 public class TopSellingTestSuite extends BaseTest {
 
-    @Test
-    public void highestDiscountGameTest() {
-        HeaderForm headerForm = new HeaderForm();
-        headerForm.clickOnAction();
-        GenreForm genreForm = new GenreForm();
-        String genreName = genreForm.getGenreName();
-        assertTrue(genreName.contains("Action") || genreName.contains("Экшн"), "Wrong page");
-        genreForm.clickTopSellers();
-        List<Game> games = genreForm.getTopSellers();
-        Game maxDiscountGame = genreForm.getMaxDiscountElement(games);
-        genreForm.clickOnGame(maxDiscountGame);
-        AgeCheckForm ageCheckForm = new AgeCheckForm();
-        if (ageCheckForm.atPage()) {
-            ageCheckForm.setYear("1970");
-            ageCheckForm.openPage();
-        }
-        GameForm gameForm = new GameForm();
-        gameForm.readGame();
-        assertEquals(gameForm.getGame(), maxDiscountGame, "Wrong game");
+    @DataProvider(name = "genresCases")
+    public static Object[][] genresCases() {
+        return new Object[][]{
+            {"Action", true},
+            {"Indie", false}
+        };
     }
 
-    @Test
-    public void lowestDiscountGameTest() {
+    @Test(dataProvider = "genresCases")
+    public void highestDiscountGameTest(String genre, boolean top) {
         HeaderForm headerForm = new HeaderForm();
-        headerForm.clickOnIndie();
+        Logger.writeLog("Click on genre " + genre);
+        headerForm.clickOnGenre(genre);
         GenreForm genreForm = new GenreForm();
-        String genreName = genreForm.getGenreName();
-        assertTrue(genreName.contains("Indie") || genreName.contains("Инди"), "Wrong page");
+        Logger.writeLog("Check right page");
+        assertTrue(genreForm.getGenreName().contains(Dictionary.getWord(genre)), "Wrong page");
+        Logger.writeLog("Click Top Sellers Tab");
         genreForm.clickTopSellers();
         List<Game> games = genreForm.getTopSellers();
-        Game minDiscountGame = genreForm.getMinDiscountElement(games);
-        genreForm.clickOnGame(minDiscountGame);
+        Logger.writeLog("Get top discount game");
+        Game topGame = genreForm.getTopDiscountElement(games, top);
+        Logger.writeLog("Click on game");
+        genreForm.clickOnGame(topGame);
         AgeCheckForm ageCheckForm = new AgeCheckForm();
-        if (ageCheckForm.atPage()) {
-            ageCheckForm.setYear("1970");
-            ageCheckForm.openPage();
-        }
+        ageCheckForm.openGame();
         GameForm gameForm = new GameForm();
+        Logger.writeLog("Read game properties");
         gameForm.readGame();
-        assertEquals(gameForm.getGame(), minDiscountGame, "Wrong game");
+        Logger.writeLog("Compare games");
+        assertEquals(gameForm.getGame(), topGame, "Wrong game");
     }
 }

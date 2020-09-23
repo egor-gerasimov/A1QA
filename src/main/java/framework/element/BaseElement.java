@@ -14,21 +14,45 @@ public abstract class BaseElement {
 
     private final WebDriver driver = Driver.getInstance();
     private final By locator;
+    private String name;
 
     public BaseElement(By locator) {
         this.locator = locator;
+    }
+
+    public BaseElement(By locator, String name) {
+        this.locator = locator;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getElementName() {
+        return "Element";
+    }
+
+    @Override
+    public String toString() {
+        return getElementName() + " " + getName();
     }
 
     public WebElement getElement() {
         return driver.findElement(locator);
     }
 
-    public boolean isEmpty() {
-        return driver.findElements(locator).isEmpty();
+    public boolean exists() {
+        return !driver.findElements(locator).isEmpty();
     }
 
     public void click() {
         if (getElement() != null) {
+            Logger.writeLog("Click " + toString());
             getElement().click();
         }
     }
@@ -38,21 +62,32 @@ public abstract class BaseElement {
     }
 
     public void clickOnLocation() {
-        Logger.writeLog("Find element");
+        Logger.writeLog("Find " + toString());
         WebElement element = getElement();
         Point location = element.getLocation();
         Dimension size = element.getSize();
         explicitWaitLocated();
-        Logger.writeLog("Click element");
+        Logger.writeLog("Click on location of " + toString());
         new Actions(driver).moveByOffset(location.getX() + size.width / 2,
             location.getY() + size.height / 2).click().build().perform();
     }
 
     public void moveTo() {
-        new Actions(driver).moveToElement(getElement()).build().perform();
+        Logger.writeLog("Move to " + toString());
+        new Actions(driver).moveToElement(getElement()).perform();
+    }
+
+    public void moveAndContextClick() {
+        Logger.writeLog("Move and context click to " + toString());
+        new Actions(driver).moveToElement(getElement()).contextClick().perform();
+    }
+
+    public void moveAndClick() {
+        Logger.writeLog("Move and click to " + toString());
+        new Actions(driver).moveToElement(getElement()).click().perform();
     }
 
     public String getText() {
-        return isEmpty() ? "" : getElement().getText();
+        return exists() ? getElement().getText() : "";
     }
 }

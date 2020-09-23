@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-//TODO rebase to Settings
 public class PropertyManager {
 
     private static Properties properties;
