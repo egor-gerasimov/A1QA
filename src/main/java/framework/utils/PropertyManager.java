@@ -10,7 +10,7 @@ public class PropertyManager {
 
     public static void readProperties() {
         properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(StringUtils.toMultiOS("src/main/resources/steam.properties"))) {
+        try (FileInputStream fis = new FileInputStream(StringUtils.toMultiOS("src/main/resources/aviasales.properties"))) {
             properties.load(fis);
         } catch (IOException e) {
             e.printStackTrace();

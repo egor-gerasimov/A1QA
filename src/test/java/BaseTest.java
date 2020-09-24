@@ -7,7 +7,6 @@ import framework.utils.Waits;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import project.form.StoreForm;
 
 public class BaseTest {
 
@@ -22,8 +21,6 @@ public class BaseTest {
     @BeforeMethod
     public void openPage() {
         Driver.getMainUrl();
-        StoreForm storeForm = new StoreForm();
-        assertTrue(storeForm.atPage(), "Wrong page");
     }
 
     @AfterClass

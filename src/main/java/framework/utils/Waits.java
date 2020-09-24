@@ -16,7 +16,7 @@ public class Waits {
     private static final WebDriver DRIVER = Driver.getInstance();
     private static final int TIMEOUT_IN_SECONDS = Integer
         .parseInt(PropertyManager.getProperty("timeout.in.sec"));
-    private static final WebDriverWait EXPLICIT_WAIT = new WebDriverWait(DRIVER, TIMEOUT_IN_SECONDS);
+    private static WebDriverWait EXPLICIT_WAIT = new WebDriverWait(DRIVER, TIMEOUT_IN_SECONDS);
     private static final FluentWait<WebDriver> FLUENT_WAIT = new FluentWait<>(DRIVER)
         .withTimeout(Duration.ofSeconds(TIMEOUT_IN_SECONDS))
         .pollingEvery(Duration.ofSeconds(3))
@@ -26,11 +26,22 @@ public class Waits {
         EXPLICIT_WAIT.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
+    public static void explicitWaitLocated(By locator, int time) {
+        EXPLICIT_WAIT = new WebDriverWait(DRIVER, time);
+        EXPLICIT_WAIT.until(ExpectedConditions.presenceOfElementLocated(locator));
+        EXPLICIT_WAIT = new WebDriverWait(DRIVER, TIMEOUT_IN_SECONDS);
+    }
+
     public static void explicitWaitTitle(String title) {
         EXPLICIT_WAIT.until(ExpectedConditions.titleIs(title));
     }
+
     public static void explicitWaitVisible(By locator) {
         EXPLICIT_WAIT.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public static void explicitWaitAttributeToBeNotEmpty(WebElement element, String attribute) {
+        EXPLICIT_WAIT.until(ExpectedConditions.attributeToBeNotEmpty(element, attribute));
     }
 
     public static void setImplicitlyWait() {

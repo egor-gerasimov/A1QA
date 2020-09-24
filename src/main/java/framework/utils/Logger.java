@@ -3,6 +3,7 @@ package framework.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -13,7 +14,7 @@ public class Logger {
     private static final Deque<String> logs = new LinkedList<>();
 
     private static String getCurrentDate() {
-        return DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
+        return DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault())
             .format(System.currentTimeMillis());
     }
 

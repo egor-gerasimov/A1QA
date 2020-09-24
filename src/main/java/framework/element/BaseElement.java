@@ -51,7 +51,7 @@ public abstract class BaseElement {
     }
 
     public void click() {
-        if (getElement() != null) {
+        if (exists()) {
             Logger.writeLog("Click " + toString());
             getElement().click();
         }
