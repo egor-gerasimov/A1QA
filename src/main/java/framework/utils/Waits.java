@@ -52,10 +52,6 @@ public class Waits {
         DRIVER.manage().timeouts().implicitlyWait(time, timeUnit);
     }
 
-    public static WebElement implicitWait(By locator) {
-        return DRIVER.findElement(locator);
-    }
-
     public static void fluentWait(By locator) {
         FLUENT_WAIT.until(ExpectedConditions.presenceOfElementLocated(locator));
     }
