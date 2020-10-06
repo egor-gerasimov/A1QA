@@ -2,5 +2,5 @@
 /*.iml
 /.idea/
 /out/
-/src/main/resources/log.txt
-/src/main/resources/categories.csv
+/src/test/resources/fileUpload.au3
+/debug.log
