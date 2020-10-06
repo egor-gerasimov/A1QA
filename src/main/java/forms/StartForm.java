@@ -9,17 +9,17 @@ import org.openqa.selenium.By;
 public class StartForm extends Form {
 
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
-    private final ILink linkHere = elementFactory.getLink(By.className("start__link"), "HERE");
+    private final ILink lnkHere = elementFactory.getLink(By.className("start__link"), "HERE");
 
-    public StartForm(By locator, String name) {
-        super(locator, name);
+    public StartForm() {
+        super(By.xpath("/html"), "Start page");
     }
 
     public void clickHere() {
-        linkHere.click();
+        lnkHere.click();
     }
 
     public boolean atPage() {
-        return linkHere.state().isExist();
+        return lnkHere.state().isExist();
     }
 }

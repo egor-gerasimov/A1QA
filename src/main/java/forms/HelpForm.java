@@ -11,20 +11,20 @@ public class HelpForm extends Form {
 
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
 
-    private final IButton sendToBottom = elementFactory
+    private final IButton btnSendToBottom = elementFactory
         .getButton(By.xpath("//button[contains(@class,'help-form__send-to-bottom-button')]"), "Send to bottom");
-    private final ILabel title = elementFactory.getLabel(By.xpath("//h2[@class='help-form__title']"), "Title");
+    private final ILabel lblTitle = elementFactory.getLabel(By.xpath("//*[@class='help-form__title']"), "Title");
 
-    public HelpForm(By locator, String name) {
-        super(locator, name);
+    public HelpForm() {
+        super(By.className("help-form__container"), "Help");
     }
 
     public void hide() {
-        sendToBottom.click();
-        title.state().waitForNotDisplayed();
+        btnSendToBottom.click();
+        lblTitle.state().waitForNotDisplayed();
     }
 
     public boolean isHidden() {
-        return title.state().isDisplayed();
+        return !lblTitle.state().isDisplayed();
     }
 }

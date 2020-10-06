@@ -11,48 +11,38 @@ import aquality.selenium.forms.Form;
 import java.util.List;
 import java.util.Random;
 import org.openqa.selenium.By;
-import utils.StringUtils;
 
 public class LoginForm extends Form {
 
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
 
-    private final ITextBox password = elementFactory.getTextBox(By.xpath("//input[@placeholder='Choose Password']"), "Password");
-    private final ITextBox email = elementFactory.getTextBox(By.cssSelector("input[placeholder='Your email']"), "Email");
-    private final ITextBox domain = elementFactory.getTextBox(By.cssSelector("input[placeholder='Domain']"), "Domain");
-    private final IComboBox tld = elementFactory.getComboBox(By.xpath("//div[contains(@class,'dropdown--')]"), "TLD");
-    private final ICheckBox notAccept = elementFactory.getCheckBox(By.className("checkbox"), "Not accept");
-    private final IButton next = elementFactory.getButton(By.xpath("//a[.='Next']"), "Next");
+    private final ITextBox txbPassword = elementFactory.getTextBox(By.xpath("//input[@placeholder='Choose Password']"), "Password");
+    private final ITextBox txbEmail = elementFactory.getTextBox(By.cssSelector("input[placeholder='Your email']"), "Email");
+    private final ITextBox txbDomain = elementFactory.getTextBox(By.cssSelector("input[placeholder='Domain']"), "Domain");
+    private final IComboBox cmbTld = elementFactory.getComboBox(By.xpath("//div[contains(@class,'dropdown--')]"), "TLD");
+    private final ICheckBox ckbNotAccept = elementFactory.getCheckBox(By.className("checkbox"), "Not accept");
+    private final IButton btnNext = elementFactory.getButton(By.xpath("//a[.='Next']"), "Next");
 
-    private final By tldLocator = By.xpath("//div[@class='dropdown__list']/div[contains(text(), '.')]");
+    private final By tldLocator = By.xpath("//div[@class='dropdown__list']//div[contains(text(), '.')]");
 
-    public LoginForm(By locator, String name) {
-        super(locator, name);
+    public LoginForm() {
+        super(By.className("login-form__container"), "Login");
     }
 
     public void setPassword(String text) {
-        password.clearAndType(text);
-    }
-
-    public void setPasswordRandom() {
-        setPassword(StringUtils.getRandomString());
+        txbPassword.clearAndType(text);
     }
 
     public void setEmail(String text) {
-        email.clearAndType(text);
-    }
-
-    public void setEmailRandom() {
-        String firstLetter = String.valueOf(password.getValue().charAt(0));
-        setEmail(firstLetter + StringUtils.getRandomString().toLowerCase());
+        txbEmail.clearAndType(text);
     }
 
     public void setDomain(String text) {
-        domain.clearAndType(text);
+        txbDomain.clearAndType(text);
     }
 
-    public void setDomainRandom() {
-        setDomain(StringUtils.getRandomString().toLowerCase());
+    public String getPassword() {
+        return txbPassword.getText();
     }
 
     private List<IButton> getTldList() {
@@ -60,16 +50,16 @@ public class LoginForm extends Form {
     }
 
     public void selectRandomTld() {
-        tld.click();
+        cmbTld.click();
         List<IButton> tldList = getTldList();
         tldList.get(new Random().nextInt(tldList.size())).click();
     }
 
     public void acceptTermsAndConditions() {
-        notAccept.click();
+        ckbNotAccept.click();
     }
 
     public void clickNext() {
-        next.click();
+        btnNext.click();
     }
 }
