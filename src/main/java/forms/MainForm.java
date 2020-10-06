@@ -9,29 +9,25 @@ import org.openqa.selenium.By;
 
 public class MainForm extends Form {
 
-    private final CookiesForm cookiesForm = new CookiesForm(By.className("cookies"), "Cookies");
-    private final LoginForm loginForm = new LoginForm(By.className("login-form__container"), "Login");
-    private final ProfileForm profileForm = new ProfileForm(By.className("avatar-and-interests__form"), "Profile");
-    private final HelpForm helpForm = new HelpForm(By.className("help-form__container"), "Help");
+    private final CookiesForm cookiesForm = new CookiesForm();
+    private final LoginForm loginForm = new LoginForm();
+    private final ProfileForm profileForm = new ProfileForm();
+    private final HelpForm helpForm = new HelpForm();
 
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
 
-    private final ILabel timer = elementFactory.getLabel(By.xpath("//div[contains(@class, 'timer--center')]"), "Timer");
-    private final ILabel pageIndicator = elementFactory.getLabel(By.xpath("//div[@class='page-indicator']"), "Page indicator");
-    private final IButton closePopup = elementFactory.getButton(By.xpath("//span[@class='modal__close-copyright']/span"), "Close popup");
+    private final ILabel lblTimer = elementFactory.getLabel(By.xpath("//div[contains(@class, 'timer--center')]"), "Timer");
+    private final ILabel lblPageNumber = elementFactory.getLabel(By.xpath("//div[@class='page-indicator']"), "Page indicator");
+    private final IButton btnClosePopup = elementFactory.getButton(By.xpath("//span[@class='modal__close-copyright']/span"), "Close popup");
 
-    public MainForm(By locator, String name) {
-        super(locator, name);
+    public MainForm() {
+        super(By.xpath("/html"), "Main page");
     }
 
     public void clearFromPopups() {
-        if (closePopup.state().isExist()) {
-            closePopup.click();
+        if (btnClosePopup.state().isExist()) {
+            btnClosePopup.click();
         }
-    }
-
-    public void acceptCookies() {
-        cookiesForm.acceptCookies();
     }
 
     public CookiesForm getCookiesForm() {
@@ -51,7 +47,7 @@ public class MainForm extends Form {
     }
 
     public String getTimerValue() {
-        return timer.getText();
+        return lblTimer.getText();
     }
 
     public boolean atLoginPage() {
@@ -63,6 +59,6 @@ public class MainForm extends Form {
     }
 
     public boolean atThirdPage() {
-        return pageIndicator.getText().equals("3 / 4");
+        return lblPageNumber.getText().charAt(0) == '3';
     }
 }

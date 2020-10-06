@@ -9,14 +9,14 @@ import org.openqa.selenium.By;
 public class CookiesForm extends Form {
 
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
-    private final IButton accept = elementFactory.getButton(
+    private final IButton btnAccept = elementFactory.getButton(
         By.xpath("//button[contains(@class,'button button--solid button--transparent')]"), "Terms & Conditions");
 
-    protected CookiesForm(By locator, String name) {
-        super(locator, name);
+    protected CookiesForm() {
+        super(By.className("cookies"), "Cookies");
     }
 
     public void acceptCookies() {
-        accept.click();
+        btnAccept.click();
     }
 }
