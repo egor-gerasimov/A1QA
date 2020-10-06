@@ -2,3 +2,5 @@
 /*.iml
 /.idea/
 /out/
+/src/test/resources/fileUpload.au3
+/debug.log
