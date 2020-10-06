@@ -33,12 +33,6 @@
       <artifactId>selenium-java</artifactId>
       <version>3.141.59</version>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.11</version>
-    </dependency>
   </dependencies>
 
   <build>
@@ -51,6 +45,7 @@
           <configuration>
             <systemPropertyVariables>
               <testng.dtd.http>true</testng.dtd.http>
+              <profile>local</profile>
             </systemPropertyVariables>
           </configuration>
         </plugin>
