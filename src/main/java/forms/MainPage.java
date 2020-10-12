@@ -7,17 +7,18 @@ import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.forms.Form;
 import org.openqa.selenium.By;
 
-public class MainForm extends Form {
+public class MainPage extends Form {
 
+    private static final String btnLocator = "//button[@onclick='%s()']";
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
 
-    private final IButton btnAlert = elementFactory.getButton(By.xpath("//button[@onclick='jsAlert()']"), "Alert");
-    private final IButton btnConfirm = elementFactory.getButton(By.xpath("//button[@onclick='jsConfirm()']"), "Confirm");
-    private final IButton btnPrompt = elementFactory.getButton(By.xpath("//button[@onclick='jsPrompt()']"), "Prompt");
+    private final IButton btnAlert = getJsButton("jsAlert", "Alert");
+    private final IButton btnConfirm = getJsButton("jsConfirm", "Confirm");
+    private final IButton btnPrompt = getJsButton("jsPrompt", "Prompt");
     private final ILabel lblResult = elementFactory.getLabel(By.id("result"), "Result");
 
-    public MainForm() {
-        super(By.xpath("/html"), "Main");
+    public MainPage() {
+        super(By.id("content"), "Main");
     }
 
     public void clickAlert() {
@@ -34,5 +35,9 @@ public class MainForm extends Form {
 
     public String getResult() {
         return lblResult.getText();
+    }
+
+    private IButton getJsButton(String locatorName, String name) {
+        return elementFactory.getButton(By.xpath(String.format(btnLocator, locatorName)), name);
     }
 }

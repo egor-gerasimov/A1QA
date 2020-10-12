@@ -2,18 +2,19 @@ import aquality.selenium.browser.AlertActions;
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
 import aquality.selenium.core.utilities.ISettingsFile;
-import forms.MainForm;
+import forms.MainPage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.Alert;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utils.Constants;
 
 public class AlertsTest extends BaseTest {
 
     private final Browser browser = AqualityServices.getBrowser();
     private final String url = AqualityServices.get(ISettingsFile.class).getValue("/url").toString();
-    private final MainForm mainForm = new MainForm();
+    private final MainPage mainPage = new MainPage();
 
     @BeforeMethod
     public void goToUrl() {
@@ -23,22 +24,22 @@ public class AlertsTest extends BaseTest {
 
     @Test
     public void alertsTest() {
-        mainForm.clickAlert();
+        mainPage.clickAlert();
         Alert alert = AqualityServices.getBrowser().getDriver().switchTo().alert();
-        Assert.assertEquals(alert.getText(), "I am a JS Alert", "Wrong alert text");
+        Assert.assertEquals(alert.getText(), Constants.getExpectedSimpleAlertText(), "Wrong alert text");
         AqualityServices.getBrowser().handleAlert(AlertActions.ACCEPT);
-        Assert.assertEquals(mainForm.getResult(), "You successfuly clicked an alert", "Wrong result text");
-        mainForm.clickConfirm();
+        Assert.assertEquals(mainPage.getResult(), Constants.getExpectedSimpleAlertResultText(), "Wrong result text");
+        mainPage.clickConfirm();
         alert = AqualityServices.getBrowser().getDriver().switchTo().alert();
-        Assert.assertEquals(alert.getText(), "I am a JS Confirm", "Wrong alert text");
+        Assert.assertEquals(alert.getText(), Constants.getExpectedConfirmAlertText(), "Wrong alert text");
         alert.accept();
-        Assert.assertEquals(mainForm.getResult(), "You clicked: Ok", "Wrong result text");
-        mainForm.clickPrompt();
+        Assert.assertEquals(mainPage.getResult(), Constants.getExpectedConfirmAlertResultText(), "Wrong result text");
+        mainPage.clickPrompt();
         alert = AqualityServices.getBrowser().getDriver().switchTo().alert();
-        Assert.assertEquals(alert.getText(), "I am a JS prompt", "Wrong alert text");
+        Assert.assertEquals(alert.getText(), Constants.getExpectedPromptAlertText(), "Wrong alert text");
         String randomString = RandomStringUtils.random(10, true, true);
         alert.sendKeys(randomString);
         alert.accept();
-        Assert.assertEquals(mainForm.getResult(), "You entered: " + randomString, "Wrong result text");
+        Assert.assertEquals(mainPage.getResult(), Constants.getExpectedPromptAlertResultText(randomString), "Wrong result text");
     }
 }
