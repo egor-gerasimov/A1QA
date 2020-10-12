@@ -28,9 +28,7 @@ public class CookiesTest extends BaseTest {
         Assert.assertEquals(cookies, CookieUtils.getCookies(), "Wrong cookies");
         String cookieToDeleteName = TestData.getValue("cookie.name.to.delete");
         CookieUtils.deleteCookieNamed(cookieToDeleteName);
-        for (Cookie cookie : CookieUtils.getCookies()) {
-            Assert.assertNotEquals(cookie.getName(), cookieToDeleteName, "Cookie didn't delete");
-        }
+        Assert.assertFalse(CookieUtils.hasCookieNamed(cookieToDeleteName), "Cookie didn't delete");
         Cookie newCookie = TestData.getNewCookie();
         CookieUtils.addCookie(newCookie);
         Assert.assertEquals(CookieUtils.getCookieNamed(newCookie.getName()), newCookie, "Cookie value didn't change");

@@ -41,4 +41,13 @@ public class CookieUtils {
         logger.info("Deleting all cookies");
         driver.manage().deleteAllCookies();
     }
+
+    public static boolean hasCookieNamed(String name) {
+        for (Cookie cookie : getCookies()) {
+            if (cookie.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
