@@ -12,24 +12,44 @@ public class IFrameForm extends Form {
 
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
     private final ITextBox txbText = elementFactory.getTextBox(By.id("tinymce"), "Text box");
+    private final String id;
 
-    protected IFrameForm(By locator, String name) {
+    protected IFrameForm(By locator, String name, String id) {
         super(locator, name);
+        this.id = id;
     }
 
-    public void clearAntTypeText(String text) {
+    private void switchToIFrame() {
+        AqualityServices.getBrowser().getDriver().switchTo().frame(id);
+    }
+
+    private void switchToDefault() {
+        AqualityServices.getBrowser().getDriver().switchTo().defaultContent();
+    }
+
+    public void clearAndTypeText(String text) {
+        switchToIFrame();
         txbText.clearAndType(text);
+        switchToDefault();
     }
 
     public String getText() {
-        return txbText.getText();
+        switchToIFrame();
+        String text = txbText.getText();
+        switchToDefault();
+        return text;
     }
 
     public void selectAllText() {
+        switchToIFrame();
         txbText.sendKeys(Keys.CONTROL + "a");
+        switchToDefault();
     }
 
     public boolean isBoldText(String text) {
-        return Utils.findTextElement(text).getElement().getTagName().equals("strong");
+        switchToIFrame();
+        boolean isBold = Utils.findTextElement(text).getElement().getTagName().equals("strong");
+        switchToDefault();
+        return isBold;
     }
 }

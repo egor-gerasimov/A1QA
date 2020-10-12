@@ -23,14 +23,11 @@ public class IFrameTest extends BaseTest {
     @Test
     public void iFrameTest() {
         Assert.assertEquals(mainForm.getTitle(), Constants.TITLE, "Wrong title");
-        AqualityServices.getBrowser().getDriver().switchTo().frame(mainForm.getIdIFrame());
         String randomString = RandomStringUtils.random(10, true, true);
-        mainForm.getIFrameForm().clearAntTypeText(randomString);
+        mainForm.getIFrameForm().clearAndTypeText(randomString);
         Assert.assertEquals(mainForm.getIFrameForm().getText(), randomString, "Wrong text in iFrame");
         mainForm.getIFrameForm().selectAllText();
-        AqualityServices.getBrowser().getDriver().switchTo().defaultContent();
         mainForm.clickBold();
-        AqualityServices.getBrowser().getDriver().switchTo().frame(mainForm.getIdIFrame());
         Assert.assertTrue(mainForm.getIFrameForm().isBoldText(randomString), "Not bold text");
     }
 

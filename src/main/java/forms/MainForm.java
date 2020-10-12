@@ -12,7 +12,7 @@ public class MainForm extends Form {
     private final IElementFactory elementFactory = AqualityServices.getElementFactory();
     private final ILabel lblTitle = elementFactory.getLabel(By.xpath("//div[@class='example']/*"), "Title");
     private final String idIFrame = "mce_0_ifr";
-    private final IFrameForm iFrameForm = new IFrameForm(By.id(idIFrame), "iFrame");
+    private final IFrameForm iFrameForm = new IFrameForm(By.id(idIFrame), "iFrame", idIFrame);
     private final IButton btnBold = elementFactory.getButton(By.id("mceu_3"), "Bold");
 
 
