@@ -4,7 +4,6 @@ import aquality.selenium.core.utilities.JsonSettingsFile;
 
 public class TestData {
 
-//    private static final String resourcesPath = System.getProperty("user.dir") + "src/test/resources/";
     private static final JsonSettingsFile file = new JsonSettingsFile("test.data.json");
 
     public static Object getValue(String value) {

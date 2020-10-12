@@ -2,13 +2,13 @@ package utils;
 
 public class Constants {
 
-    private static final String expectedResult =
+    private static final String expectedResultFormat =
         "{\n"
         + "  \"authenticated\": true, \n"
-        + "  \"user\": \"" + TestData.getUsername() + "\"\n"
+        + "  \"user\": \"%s\"\n"
         + "}";
 
-    public static String getExpectedResult() {
-        return expectedResult;
+    public static String getExpectedResultFormat() {
+        return expectedResultFormat;
     }
 }

@@ -1,24 +1,23 @@
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.browser.Browser;
+import aquality.selenium.core.utilities.ISettingsFile;
 import form.AuthorizationForm;
 import org.testng.annotations.Test;
-import utils.Constants;
 import utils.SettingsUtils;
+import utils.TestData;
 
 public class BasicAuthorizationTest extends BaseTest {
 
-    private final Browser browser = AqualityServices.getBrowser();
-    private final String url = SettingsUtils.getAuthorizationUrl();
-
     private static final AuthorizationForm authForm = new AuthorizationForm();
+    private final Browser browser = AqualityServices.getBrowser();
+    private final String url = AqualityServices.get(ISettingsFile.class).getValue("/url").toString();
 
     @Test
     public void goToUrl() {
-        browser.goTo(url);
+        browser.goTo(SettingsUtils.getAuthorizationUrl(url, TestData.getUsername(), TestData.getPassword()));
         browser.waitForPageToLoad();
-        assertEquals(authForm.getResultText(), Constants.getExpectedResult(), "Wrong page result");
+        assertEquals(authForm.getResultText(), SettingsUtils.getExpectedResult(TestData.getUsername()),"Wrong page result");
     }
 }
