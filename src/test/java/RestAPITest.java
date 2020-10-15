@@ -3,12 +3,14 @@ import models.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import utils.APIUtils;
-import utils.HttpStatus;
-import utils.TestData;
-import utils.Utils;
+import response.PostResponse;
+import response.PostsResponse;
+import response.UserResponse;
+import response.UsersResponse;
+import utils.*;
 
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 import java.util.List;
 
 public class RestAPITest extends BaseTest {
@@ -16,26 +18,26 @@ public class RestAPITest extends BaseTest {
     @Test
     public void getAPI() {
         //step1
-        HttpResponse<String> response = APIUtils.getPosts();
-        Assert.assertEquals(response.statusCode(), HttpStatus.OK, "Wrong status code");
-        Assert.assertTrue(Utils.isJson(response.body()), "Response isn't JSON");
-        List<Post> posts = APIUtils.readPosts(response);
+        PostsResponse postsResponse = Responses.getPosts();
+        Assert.assertEquals(postsResponse.getStatusCode(), HttpStatus.OK, "Wrong status code");
+        Assert.assertTrue(postsResponse.isJSON(), "Response isn't JSON");
+        List<Post> posts = postsResponse.getObject();
         Assert.assertTrue(Utils.isSortedByID(posts), "Not sorted list");
         //step2
         long postId = TestData.getLongValue("post.id.step.2");
         long postUserId = TestData.getLongValue("post.userid.step.2");
-        response = APIUtils.getPost(postId);
-        Assert.assertEquals(response.statusCode(), HttpStatus.OK, "Wrong status code");
-        Post post = APIUtils.readObject(response, Post.class);
+        PostResponse postResponse = Responses.getPost(postId);
+        Assert.assertEquals(postResponse.getStatusCode(), HttpStatus.OK, "Wrong status code");
+        Post post = postResponse.getObject();
         Assert.assertEquals(post.getUserId(), postUserId, "Wrong user id");
         Assert.assertEquals(post.getId(), postId, "Wrong id");
         Assert.assertFalse(post.getTitle().isEmpty(), "Title is empty");
         Assert.assertFalse(post.getBody().isEmpty(), "Body is empty");
         //step3
         postId =  TestData.getLongValue("post.id.step.3");
-        response = APIUtils.getPost(postId);
-        Assert.assertEquals(response.statusCode(), HttpStatus.NOT_FOUND, "Wrong status code");
-        Assert.assertEquals(response.body(), "{}", "Wrong response");
+        postResponse = Responses.getPost(postId);
+        Assert.assertEquals(postResponse.getStatusCode(), HttpStatus.NOT_FOUND, "Wrong status code");
+        Assert.assertEquals(postResponse.getBody(), "{}", "Wrong response");
         //step4
         postUserId = TestData.getLongValue("post.userid.step.4");
         String randomTitle = RandomStringUtils.random(10, true, true);
@@ -44,22 +46,22 @@ public class RestAPITest extends BaseTest {
         newPost.setUserId(postUserId);
         newPost.setTitle(randomTitle);
         newPost.setBody(randomBody);
-        response = APIUtils.put(newPost);
-        Assert.assertEquals(response.statusCode(), HttpStatus.CREATED, "Wrong status code");
-        post = APIUtils.readObject(response, Post.class);
+        postResponse = Responses.put(newPost);
+        Assert.assertEquals(postResponse.getStatusCode(), HttpStatus.CREATED, "Wrong status code");
+        post = postResponse.getObject();
         Assert.assertEquals(newPost, post, "Wrong new post");
         Assert.assertNotEquals(post.getId(), 0, "Not valid post id");
         //step5
-        response = APIUtils.getUsers();
-        Assert.assertEquals(response.statusCode(), HttpStatus.OK, "Wrong status code");
-        Assert.assertTrue(Utils.isJson(response.body()), "Response isn't JSON");
-        List<User> users = APIUtils.readUsers(response);
+        UsersResponse usersResponse = Responses.getUsers();
+        Assert.assertEquals(usersResponse.getStatusCode(), HttpStatus.OK, "Wrong status code");
+        Assert.assertTrue(usersResponse.isJSON(), "Response isn't JSON");
+        List<User> users = usersResponse.getObject();
         User testUser = TestData.getUserStep5();
         User user = users.stream().filter((o) -> o.getId() == testUser.getId()).findAny().orElseThrow();
         Assert.assertEquals(user, testUser, "Wrong data user " + user.getId());
         //step6
-        response = APIUtils.getUser(testUser.getId());
-        User newUser = APIUtils.readObject(response, User.class);
+        UserResponse userResponse = Responses.getUser(testUser.getId());
+        User newUser = userResponse.getObject();
         Assert.assertEquals(newUser, user, "Wrong data user " + user.getId());
     }
 }
