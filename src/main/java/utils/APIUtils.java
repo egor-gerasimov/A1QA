@@ -21,6 +21,8 @@ public class APIUtils {
     private static final String url = AqualityServices.get(ISettingsFile.class).getValue("/url").toString();
     private static final String postsPath = "/posts";
     private static final String usersPath = "/users";
+    private static final String headerName = "content-type";
+    private static final String headerValue = "application/json";
 
     public static HttpResponse<String> getPosts() {
         return getResponse(getGetRequest(postsPath));
@@ -46,7 +48,7 @@ public class APIUtils {
         AqualityServices.getLogger().info("Build request: POST " + path);
         return HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
-                .header("content-type", "application/json")
+                .header(headerName, headerValue)
                 .uri(URI.create(url + path))
                 .build();
     }
@@ -55,7 +57,7 @@ public class APIUtils {
         AqualityServices.getLogger().info("Build request: GET " + path);
         return HttpRequest.newBuilder()
                 .GET()
-                .header("content-type", "application/json")
+                .header(headerName, headerValue)
                 .uri(URI.create(url + path))
                 .build();
     }

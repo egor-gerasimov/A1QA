@@ -7,17 +7,13 @@ import models.Post;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Utils {
 
     public static boolean isSortedByID(List<Post> posts) {
         long[] sortedIDs = posts.stream().mapToLong(Post::getId).sorted().toArray();
-        for (int i = 0; i < posts.size(); i++) {
-            if (posts.get(i).getId() != sortedIDs[i]) {
-                return false;
-            }
-        }
-        return true;
+        return IntStream.range(0, posts.size() - 1).noneMatch(i -> posts.get(i).getId() != sortedIDs[i]);
     }
 
     public static boolean isJson(String content) {

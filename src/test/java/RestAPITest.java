@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import utils.APIUtils;
+import utils.HttpStatus;
 import utils.TestData;
 import utils.Utils;
 
@@ -16,7 +17,7 @@ public class RestAPITest extends BaseTest {
     public void getAPI() {
         //step1
         HttpResponse<String> response = APIUtils.getPosts();
-        Assert.assertEquals(response.statusCode(), 200, "Wrong status code");
+        Assert.assertEquals(response.statusCode(), HttpStatus.OK, "Wrong status code");
         Assert.assertTrue(Utils.isJson(response.body()), "Response isn't JSON");
         List<Post> posts = APIUtils.readPosts(response);
         Assert.assertTrue(Utils.isSortedByID(posts), "Not sorted list");
@@ -24,7 +25,7 @@ public class RestAPITest extends BaseTest {
         long postId = TestData.getLongValue("post.id.step.2");
         long postUserId = TestData.getLongValue("post.userid.step.2");
         response = APIUtils.getPost(postId);
-        Assert.assertEquals(response.statusCode(), 200, "Wrong status code");
+        Assert.assertEquals(response.statusCode(), HttpStatus.OK, "Wrong status code");
         Post post = APIUtils.readObject(response, Post.class);
         Assert.assertEquals(post.getUserId(), postUserId, "Wrong user id");
         Assert.assertEquals(post.getId(), postId, "Wrong id");
@@ -33,7 +34,7 @@ public class RestAPITest extends BaseTest {
         //step3
         postId =  TestData.getLongValue("post.id.step.3");
         response = APIUtils.getPost(postId);
-        Assert.assertEquals(response.statusCode(), 404, "Wrong status code");
+        Assert.assertEquals(response.statusCode(), HttpStatus.NOT_FOUND, "Wrong status code");
         Assert.assertEquals(response.body(), "{}", "Wrong response");
         //step4
         postUserId = TestData.getLongValue("post.userid.step.4");
@@ -44,13 +45,13 @@ public class RestAPITest extends BaseTest {
         newPost.setTitle(randomTitle);
         newPost.setBody(randomBody);
         response = APIUtils.put(newPost);
-        Assert.assertEquals(response.statusCode(), 201, "Wrong status code");
+        Assert.assertEquals(response.statusCode(), HttpStatus.CREATED, "Wrong status code");
         post = APIUtils.readObject(response, Post.class);
         Assert.assertEquals(newPost, post, "Wrong new post");
         Assert.assertNotEquals(post.getId(), 0, "Not valid post id");
         //step5
         response = APIUtils.getUsers();
-        Assert.assertEquals(response.statusCode(), 200, "Wrong status code");
+        Assert.assertEquals(response.statusCode(), HttpStatus.OK, "Wrong status code");
         Assert.assertTrue(Utils.isJson(response.body()), "Response isn't JSON");
         List<User> users = APIUtils.readUsers(response);
         User testUser = TestData.getUserStep5();
