@@ -1,28 +1,28 @@
 package utils;
 
+import constants.VkMethods;
+
 import java.io.File;
-import java.net.http.HttpResponse;
 import java.util.Map;
 
-import static utils.VkApiUtils.getCommonParams;
-import static utils.VkApiUtils.getPostRequest;
+import static utils.VkApiUtils.*;
 
 public class VK {
 
-    private static final String methodWallPost = "wall.post";
-    private static final String messageParam = "message";
-    private static final String postIdParam = "post_id";
-
     public static int wallPost(String message) {
         Map<String, String> params = getCommonParams();
-        params.put(messageParam, message);
-        HttpResponse<String> response = APIUtils.getResponse(getPostRequest(methodWallPost, params));
-        return Utils.getObjectNode(response.body()).get("response").get("post_id").asInt();
+        params.put("message", message);
+        String body = execute(VkMethods.WALL_POST, params);
+        return Utils.getObjectNode(body).get("response").get("post_id").asInt();
     }
 
-    public static void editPost(int postId, String message, File image) {
+    public static int wallEdit(int postId, String message, File image) {
+        String photoName = getWallPhotoName(image);
         Map<String, String> params = getCommonParams();
-        params.put(messageParam, message);
-        params.put(postIdParam, String.valueOf(postId));
+        params.put("post_id", String.valueOf(postId));
+        params.put("message", message);
+        params.put("attachments", photoName);
+        String responseBody = execute(VkMethods.WALL_EDIT, params);
+        return Utils.getObjectNode(responseBody).get("response").asInt();
     }
 }

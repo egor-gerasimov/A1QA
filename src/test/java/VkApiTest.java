@@ -12,8 +12,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import utils.TestData;
 import utils.VK;
-import utils.VkApiUtils;
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 
@@ -42,10 +42,14 @@ public class VkApiTest extends BaseTest {
         PostForm.waitForPost(message);
         WallForm wallForm = new WallForm();
         List<Post> posts = wallForm.getPosts();
-        models.Post post = posts.stream().filter(o -> o.getMessage().equals(message)).findFirst().orElse(null);
+        Post post = posts.stream().filter(o -> o.getMessage().equals(message)).findFirst().orElse(null);
         Assert.assertNotNull(post, "No such post with message: " + message);
         String href = URI.create(post.getAuthorHref()).getPath();
         Assert.assertEquals(href, TestData.getStringValue("user.href"), "Wrong post author");
-        VkApiUtils.sendPhoto(postId);
+        File file = new File(TestData.getStringValue("photo.path"));
+        String newMessage = RandomStringUtils.random(10, true, true);
+        postId = VK.wallEdit(postId, newMessage, file);
+        Post editedPost = wallForm.getPostWithPhoto(post.getId());
+        editedPost.getPhoto();
     }
 }

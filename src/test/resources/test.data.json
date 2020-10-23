@@ -3,5 +3,6 @@
   "password" : "PuV6j_.2&$m9h?UYY",
   "token": "d64fad626d8491fdb11fb539fb2668ad52134c0b74dd0bdedf3f3d67532615f0ac4c48d1d4b1269692e7b",
   "user.href" : "/id381108928",
-  "user.id" : "381108928"
+  "user.id" : "381108928",
+  "photo.path" : "src/test/resources/image.jpg"
 }
