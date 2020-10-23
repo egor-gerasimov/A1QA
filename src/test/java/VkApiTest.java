@@ -70,6 +70,5 @@ public class VkApiTest extends BaseTest {
         Post reply = replies.stream().filter(o -> o.getMessage().equals(comment)).findFirst().orElse(null);
         Assert.assertNotNull(reply, "No such post with message: " + comment);
         Assert.assertEquals(reply.getAuthorHrefPath(), TestData.getStringValue("user.href"), "Wrong post author");
-        
     }
 }
