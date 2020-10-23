@@ -16,13 +16,19 @@ public class VK {
         return Utils.getObjectNode(body).get("response").get("post_id").asInt();
     }
 
-    public static int wallEdit(int postId, String message, File image) {
-        String photoName = getWallPhotoName(image);
+    public static void wallEdit(int postId, String message, File image) {
+        String photoName = saveWallPhoto(image);
         Map<String, String> params = getCommonParams();
         params.put("post_id", String.valueOf(postId));
         params.put("message", message);
         params.put("attachments", photoName);
-        String responseBody = execute(VkMethods.WALL_EDIT, params);
-        return Utils.getObjectNode(responseBody).get("response").asInt();
+        execute(VkMethods.WALL_EDIT, params);
+    }
+
+    public static void createReply(int postId, String message) {
+        Map<String, String> params = getCommonParams();
+        params.put("post_id", String.valueOf(postId));
+        params.put("message", message);
+        execute(VkMethods.WALL_CREATE_COMMENT, params);
     }
 }

@@ -13,10 +13,4 @@ public class TestData {
         logger.info("Read value '" + value + "' from test data");
         return file.getValue("/" + value).toString();
     }
-
-    public static long getLongValue(String value) {
-        logger.info("Read value '" + value + "' from test data");
-        return (int) file.getValue("/" + value);
-    }
-
 }

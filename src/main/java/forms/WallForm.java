@@ -6,7 +6,7 @@ import aquality.selenium.forms.Form;
 import models.Post;
 import org.openqa.selenium.By;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,9 +14,7 @@ import java.util.stream.Collectors;
 public class WallForm extends Form {
 
     private static final String locator = "//div[@id='page_wall_posts']";
-    private static final String postsLocator = "//div[contains(@class, '_post post page_block')]";
-    private static final String postLocatorFormat = postsLocator + "[%d]";
-    private static final String postByIdLocatorFormat = "//div[@id='%s']";
+    private static final String postsLoc = "//div[contains(@class, '_post post page_block')]";
 
     public WallForm() {
         super(By.xpath(locator), "Post wall");
@@ -24,9 +22,9 @@ public class WallForm extends Form {
 
     public List<PostForm> getPostForms() {
         List<PostForm> postForms = new ArrayList<>();
-        List<IElement> elements = getFormLabel().findChildElements(By.xpath(postsLocator), ElementType.LABEL);
-        for (int i = 1; i <= elements.size(); i++) {
-            postForms.add(new PostForm(By.xpath(String.format(postLocatorFormat, i)), "Post #" + i));
+        List<IElement> elements = getFormLabel().findChildElements(By.xpath(postsLoc), ElementType.LABEL);
+        for (IElement element : elements) {
+            postForms.add(new PostForm(element.getAttribute("id")));
         }
         return postForms;
     }
@@ -35,14 +33,9 @@ public class WallForm extends Form {
         return getPostForms().stream().map(PostForm::getPost).collect(Collectors.toList());
     }
 
-    public PostForm getPostForm(String postId) {
-        String locator = String.format(postByIdLocatorFormat, postId);
-        return new PostForm(By.xpath(locator), "Post with id " + postId);
-    }
-
     public Post getPostWithPhoto(String postId) {
-        PostForm postForm = getPostForm(postId);
-        Image image = postForm.getImage();
+        PostForm postForm = new PostForm(postId);
+        BufferedImage image = postForm.getImage();
         Post post = postForm.getPost();
         post.setPhoto(image);
         return post;

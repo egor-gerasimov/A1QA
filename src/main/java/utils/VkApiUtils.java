@@ -11,11 +11,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,8 +60,7 @@ public class VkApiUtils {
         return Utils.getObjectNode(responseBody).get("response").get("upload_url").asText();
     }
 
-    protected static String getWallPhotoName(File file1) {
-        File file = new File("src/test/resources/image.jpg");
+    protected static String saveWallPhoto(File file) {
         HttpEntity entity = MultipartEntityBuilder.create().addBinaryBody("photo", file).build();
         HttpPost post = new HttpPost(getPhotoWallUploadUrl());
         post.setEntity(entity);
@@ -80,7 +76,7 @@ public class VkApiUtils {
         responseBody = execute(VkMethods.PHOTOS_SAVE_WALL_PHOTO, params);
         String photoId = Utils.getObjectNode(responseBody).get("response").get(0).get("id").asText();
         String ownerId = Utils.getObjectNode(responseBody).get("response").get(0).get("owner_id").asText();
-        return "photo" + photoId + "_" + ownerId;
+        return "photo" + ownerId + "_" + photoId;
     }
 
 }
