@@ -32,6 +32,7 @@ public class PostForm extends Form {
     protected final ILabel lblAuthor = getFormLabel().findChildElement(By.xpath(userLoc), "User", ElementType.LABEL);
     private final ILink lnkPhoto = getFormLabel().findChildElement(By.xpath(photoLoc), "Photo", ElementType.LINK);
     private final IButton btnShowReplies = getFormLabel().findChildElement(By.xpath(showRepliesLoc), "Show comments", ElementType.BUTTON);
+    private final IButton btnLike = getFormLabel().findChildElement(By.className("like_button_icon"), "Like", ElementType.BUTTON);
 
     public PostForm(String postId) {
         super(By.id(postId), "Post with id " + postId);
@@ -42,7 +43,16 @@ public class PostForm extends Form {
             AqualityServices.getConditionalWait().waitForTrue(() -> !AqualityServices.getBrowser().getDriver()
                     .findElementsByXPath(String.format(messageTextLocFormat, message)).isEmpty());
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            AqualityServices.getLogger().error(e.getMessage());
+        }
+    }
+
+    public static void waitForDeletePost(String id) {
+        try {
+            AqualityServices.getConditionalWait().waitForTrue(() -> AqualityServices.getBrowser().getDriver()
+                    .findElementsById(id).isEmpty());
+        } catch (TimeoutException e) {
+            AqualityServices.getLogger().error(e.getMessage());
         }
     }
 
@@ -58,12 +68,8 @@ public class PostForm extends Form {
         BufferedImage image = null;
         if (lnkPhoto.state().isExist()) {
             lnkPhoto.click();
-//        AqualityServices.getBrowser().tabs().openInNewTab(lnkPhoto.getHref());
-//        AqualityServices.getBrowser().tabs().switchToLastTab();
             PhotoForm photoForm = new PhotoForm();
             String photoURL = photoForm.getPhotoURL();
-//        AqualityServices.getBrowser().tabs().closeTab();
-//        AqualityServices.getBrowser().tabs().switchToTab(0);
             photoForm.close();
             image = Utils.getImage(photoURL);
         }
@@ -75,7 +81,7 @@ public class PostForm extends Form {
             btnShowReplies.click();
         }
     }
-    
+
     public List<ReplyForm> getReplyForms() {
         List<ReplyForm> postForms = new ArrayList<>();
         List<IElement> elements = getFormLabel().findChildElements(By.xpath(repliesLoc), ElementType.LABEL);
@@ -87,5 +93,9 @@ public class PostForm extends Form {
 
     public List<Post> getReplies() {
         return getReplyForms().stream().map(ReplyForm::getReply).collect(Collectors.toList());
+    }
+
+    public void clickLike() {
+        btnLike.click();
     }
 }

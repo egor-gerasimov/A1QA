@@ -40,4 +40,8 @@ public class WallForm extends Form {
         post.setPhoto(image);
         return post;
     }
+
+    public boolean hasPost(String id) {
+        return !getFormLabel().findChildElements(By.id(id), ElementType.LABEL).isEmpty();
+    }
 }

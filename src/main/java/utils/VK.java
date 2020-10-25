@@ -31,4 +31,18 @@ public class VK {
         params.put("message", message);
         execute(VkMethods.WALL_CREATE_COMMENT, params);
     }
+
+    public static boolean isLiked(int postId) {
+        Map<String, String> params = getCommonParams();
+        params.put("type", "post");
+        params.put("item_id", String.valueOf(postId));
+        String responseBody = execute(VkMethods.LIKES_IS_LIKED, params);
+        return Utils.getObjectNode(responseBody).get("response").get("liked").asInt() == 1;
+    }
+
+    public static void deletePost(int postId) {
+        Map<String, String> params = getCommonParams();
+        params.put("post_id", String.valueOf(postId));
+        execute(VkMethods.WALL_DELETE, params);
+    }
 }

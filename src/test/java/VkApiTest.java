@@ -69,6 +69,16 @@ public class VkApiTest extends BaseTest {
         List<Post> replies = postForm.getReplies();
         Post reply = replies.stream().filter(o -> o.getMessage().equals(comment)).findFirst().orElse(null);
         Assert.assertNotNull(reply, "No such post with message: " + comment);
-        Assert.assertEquals(reply.getAuthorHrefPath(), TestData.getStringValue("user.href"), "Wrong post author");
+        Assert.assertEquals(reply.getAuthorHrefPath(), TestData.getStringValue("user.href"), "Wrong reply author");
+        //10
+        postForm.clickLike();
+        //11
+        boolean liked = VK.isLiked(postId);
+        Assert.assertTrue(liked, "Post isn't liked");
+        //12
+        VK.deletePost(postId);
+        //13
+        PostForm.waitForDeletePost(editedPost.getId());
+        Assert.assertFalse(wallForm.hasPost(editedPost.getId()), "Post didn't delete");
     }
 }
