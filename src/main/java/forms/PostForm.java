@@ -9,9 +9,7 @@ import aquality.selenium.elements.interfaces.ILink;
 import aquality.selenium.forms.Form;
 import models.Post;
 import org.openqa.selenium.By;
-import utils.Utils;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -64,16 +62,15 @@ public class PostForm extends Form {
         return post;
     }
 
-    public BufferedImage getImage() {
-        BufferedImage image = null;
+    public String getImageURL() {
+        String photoURL = "";
         if (lnkPhoto.state().isExist()) {
             lnkPhoto.click();
             PhotoForm photoForm = new PhotoForm();
-            String photoURL = photoForm.getPhotoURL();
+            photoURL = photoForm.getPhotoURL();
             photoForm.close();
-            image = Utils.getImage(photoURL);
         }
-        return image;
+        return photoURL;
     }
 
     public void showReplies() {

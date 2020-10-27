@@ -1,6 +1,7 @@
 package utils;
 
 import constants.VkMethods;
+import models.Response;
 
 import java.io.File;
 import java.util.Map;
@@ -32,12 +33,16 @@ public class VK {
         execute(VkMethods.WALL_CREATE_COMMENT, params);
     }
 
-    public static boolean isLiked(int postId) {
+    private static Response getIsLiked(int postId) {
         Map<String, String> params = getCommonParams();
         params.put("type", "post");
         params.put("item_id", String.valueOf(postId));
-        String responseBody = execute(VkMethods.LIKES_IS_LIKED, params);
-        return Utils.getObjectNode(responseBody).get("response").get("liked").asInt() == 1;
+        return getResponse(VkMethods.LIKES_IS_LIKED, params);
+    }
+
+    public static boolean isLiked(int postId) {
+        Response response = getIsLiked(postId);
+        return response.getIntValue("liked") == 1;
     }
 
     public static void deletePost(int postId) {

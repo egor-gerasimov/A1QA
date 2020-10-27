@@ -8,8 +8,7 @@ import org.openqa.selenium.By;
 
 public class NavigateBarForm extends Form {
 
-    private final IElementFactory elementFactory = AqualityServices.getElementFactory();
-    private final IButton btnProfile = elementFactory.getButton(By.id("l_pr"), "Profile");
+    private final IButton btnProfile = getElementFactory().getButton(By.id("l_pr"), "Profile");
 
     public NavigateBarForm() {
         super(By.xpath("//div[@id='side_bar_inner']//nav"), "Navigate bar");

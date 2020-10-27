@@ -5,6 +5,7 @@ import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.forms.Form;
 import models.Post;
 import org.openqa.selenium.By;
+import utils.ImageUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class WallForm extends Form {
 
     public Post getPostWithPhoto(String postId) {
         PostForm postForm = new PostForm(postId);
-        BufferedImage image = postForm.getImage();
+        BufferedImage image = ImageUtils.getImage(postForm.getImageURL());
         Post post = postForm.getPost();
         post.setPhoto(image);
         return post;

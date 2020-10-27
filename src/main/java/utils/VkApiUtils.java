@@ -2,6 +2,7 @@ package utils;
 
 import aquality.selenium.browser.AqualityServices;
 import constants.VkMethods;
+import models.Response;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpPost;
@@ -22,7 +23,7 @@ public class VkApiUtils {
 
     private static final Map<String, String> commonParams = new HashMap<>() {
         {
-            put("v", "5.52");
+            put("v", SettingsData.getStringValue("vk.api.version"));
             put("access_token", TestData.getStringValue("token"));
         }
     };
@@ -51,6 +52,10 @@ public class VkApiUtils {
         HttpPost httpPost = new HttpPost(urlMethod + method);
         httpPost.setEntity(entity);
         return execute(httpPost);
+    }
+
+    protected static Response getResponse(String method, Map<String, String> params) {
+        return new Response(execute(method, params));
     }
 
     private static String getPhotoWallUploadUrl() {

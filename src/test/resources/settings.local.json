@@ -4,6 +4,7 @@
   "remoteConnectionUrl": "http://localhost:4444/wd/hub",
   "isElementHighlightEnabled" : true,
   "url": "https://vk.com/",
+  "vk.api.version" : "5.124",
 
   "driverSettings": {
     "chrome": {
