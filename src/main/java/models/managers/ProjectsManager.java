@@ -1,4 +1,4 @@
-package managers;
+package models.managers;
 
 import models.Project;
 
@@ -11,7 +11,7 @@ public class ProjectsManager {
 
     public Project getProject(String name) {
         Project project;
-        if (projects.stream().anyMatch(o -> o.getName().equals(name))) {
+        if (projects.stream().noneMatch(o -> o.getName().equals(name))) {
             project = new Project(name);
             projects.add(project);
         }
@@ -19,9 +19,5 @@ public class ProjectsManager {
             project = projects.stream().filter(o -> o.getName().equals(name)).findAny().orElse(null);
         }
         return project;
-    }
-
-    public Set<Project> getProjects() {
-        return projects;
     }
 }

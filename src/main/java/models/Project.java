@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class Project {
     private String name;
+    private int testCount;
 
     public Project(String name) {
         this.name = name;
