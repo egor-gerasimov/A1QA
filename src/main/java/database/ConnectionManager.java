@@ -1,6 +1,7 @@
 package database;
 
 import aquality.selenium.browser.AqualityServices;
+import utils.SettingsData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,9 +9,9 @@ import java.sql.SQLException;
 
 public class ConnectionManager {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/union_reporting?useTimezone=true&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "1111";
+    private static final String URL = SettingsData.getStringValue("db.connection.url");
+    private static final String USER = SettingsData.getStringValue("db.username");
+    private static final String PASSWORD = SettingsData.getStringValue("db.password");
     private static Connection instance;
 
     public static void createConnection() {

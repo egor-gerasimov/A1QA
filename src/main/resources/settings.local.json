@@ -3,6 +3,9 @@
   "isRemote": false,
   "remoteConnectionUrl": "http://localhost:4444/wd/hub",
   "isElementHighlightEnabled" : true,
+  "db.connection.url" : "jdbc:mysql://localhost:3306/union_reporting?useTimezone=true&serverTimezone=UTC",
+  "db.username" : "root",
+  "db.password" : "1111",
 
   "driverSettings": {
     "chrome": {
