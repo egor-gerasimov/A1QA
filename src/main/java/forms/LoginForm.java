@@ -42,7 +42,7 @@ public class LoginForm extends Form {
     }
 
     public String getPassword() {
-        return txbPassword.getText();
+        return txbPassword.getValue();
     }
 
     private List<IButton> getTldList() {

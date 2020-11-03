@@ -25,7 +25,6 @@
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.3.0</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -39,6 +38,13 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.11</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -49,13 +55,17 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M5</version>
           <configuration>
+            <forkCount>0</forkCount>
+            <suiteXmlFiles>
+              <suiteXmlFile>testng.xml</suiteXmlFile>
+            </suiteXmlFiles>
             <systemPropertyVariables>
               <testng.dtd.http>true</testng.dtd.http>
+              <profile>local</profile>
             </systemPropertyVariables>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
-
 </project>
