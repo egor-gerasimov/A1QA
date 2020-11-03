@@ -50,6 +50,5 @@ public class TestRailManager {
 
     public void deleteAll(ITestContext context) {
         deleteScreenshots(context);
-        deleteRunSuite();
     }
 }

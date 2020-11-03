@@ -5,8 +5,8 @@
   "isElementHighlightEnabled" : true,
   "url" : "https://userinyerface.com/game.html%20target=",
   "test.rail.url" : "https://tr.a1qa.com/",
-  "test.rail.username" : "e.gerasimov",
-  "test.rail.password" : "1549412Ифеу",
+  "test.rail.username" : "",
+  "test.rail.password" : "",
 
   "driverSettings": {
     "chrome": {
