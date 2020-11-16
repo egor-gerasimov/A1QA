@@ -3,7 +3,6 @@ package testRail;
 import aquality.selenium.browser.AqualityServices;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.testng.ITestResult;
 import testRail.gurock.APIClient;
 import testRail.gurock.APIException;
 import utils.SettingsData;
@@ -95,32 +94,6 @@ public class TestRailAPI {
         return id;
     }
 
-    private static int getTestRailStatusId(int statusId) {
-        switch (statusId) {
-            case ITestResult.SUCCESS:
-                return 1;
-            case ITestResult.FAILURE:
-                return 5;
-            case ITestResult.SKIP:
-                return 4;
-            default:
-                return 3;
-        }
-    }
-
-    private static String getCommentByStatusId(int statusId) {
-        switch (statusId) {
-            case ITestResult.SUCCESS:
-                return "Passed";
-            case ITestResult.FAILURE:
-                return "Failed";
-            case ITestResult.SKIP:
-                return "Skipped";
-            default:
-                return "Untested";
-        }
-    }
-
     public static void addAttachmentToResult(int resultId, String path) {
         try {
             getClient().sendPost("add_attachment_to_result/" + resultId, path);
@@ -131,9 +104,10 @@ public class TestRailAPI {
 
     public static int addResult(int runId, int caseId, int statusId) {
         int id = 0;
+        TestRailStatus testRailStatus = TestRailStatus.getTestRailStatus(statusId);
         Map<String, Object> data = new HashMap<>();
-        data.put("status_id", getTestRailStatusId(statusId));
-        data.put("comment", getCommentByStatusId(statusId));
+        data.put("status_id", testRailStatus.getId());
+        data.put("comment", testRailStatus.getName());
         try {
             JSONObject result = (JSONObject) getClient().sendPost("add_result_for_case/" + runId + "/" + caseId, data);
             id = getId(result);

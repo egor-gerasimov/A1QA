@@ -30,7 +30,6 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult result) {
-        ImageUtils.saveScreenshot(result.getMethod().getMethodName());
         testRailManager.addResult(result);
     }
 
